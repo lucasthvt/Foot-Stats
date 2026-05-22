@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>FootStats Pro — Top 5 Ligues 2025-26</title>
+  <title>FootStats Pro — Top 5 Ligues</title>
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
     :root {
@@ -15,18 +15,35 @@
       --green: #00e676;
       --text: #e2e8f4;
     }
-    body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', sans-serif; min-height: 100vh; }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Segoe UI', sans-serif;
+      min-height: 100vh;
+    }
 
     /* ── Top Bar ── */
     .topbar {
-      background: #050a14; border-bottom: 1px solid var(--border);
-      padding: 0 20px; display: flex; align-items: center;
-      gap: 12px; height: 52px; position: sticky; top: 0; z-index: 20;
+      background: #050a14;
+      border-bottom: 1px solid var(--border);
+      padding: 0 20px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      height: 52px;
+      position: sticky;
+      top: 0;
+      z-index: 20;
     }
     .logo { font-size: 15px; font-weight: 700; color: var(--green); margin-right: auto; letter-spacing: 1px; }
     .live-badge {
-      font-size: 10px; background: #00e67620; color: var(--green);
-      border: 1px solid #00e67640; padding: 3px 8px; border-radius: 20px; font-weight: 600;
+      font-size: 10px;
+      background: #00e67620;
+      color: var(--green);
+      border: 1px solid #00e67640;
+      padding: 3px 8px;
+      border-radius: 20px;
+      font-weight: 600;
     }
     .nav-btn {
       background: none; border: none; color: var(--muted);
@@ -34,56 +51,13 @@
       border-radius: 6px; transition: .15s;
     }
     .nav-btn.active, .nav-btn:hover { color: #fff; background: var(--card2); }
-    .key-btn {
-      background: var(--card2); border: 1px solid var(--border);
-      color: var(--muted); font-size: 11px; cursor: pointer;
-      padding: 5px 10px; border-radius: 6px; transition: .15s;
-    }
-    .key-btn:hover { color: var(--green); border-color: var(--green); }
-
-    /* ── API Key Modal ── */
-    .modal-overlay {
-      display: none; position: fixed; inset: 0;
-      background: #000a; z-index: 100; align-items: center; justify-content: center;
-    }
-    .modal-overlay.open { display: flex; }
-    .modal {
-      background: var(--card); border: 1px solid var(--border);
-      border-radius: 14px; padding: 28px; width: 90%; max-width: 480px;
-    }
-    .modal h3 { font-size: 16px; margin-bottom: 8px; }
-    .modal p { font-size: 12px; color: var(--muted); margin-bottom: 18px; line-height: 1.6; }
-    .modal input {
-      width: 100%; background: var(--card2); border: 1px solid var(--border);
-      color: var(--text); font-size: 13px; padding: 10px 14px;
-      border-radius: 8px; outline: none; margin-bottom: 14px;
-      font-family: monospace;
-    }
-    .modal input:focus { border-color: var(--green); }
-    .modal-btns { display: flex; gap: 10px; justify-content: flex-end; }
-    .btn-primary {
-      background: var(--green); color: #000; font-weight: 700;
-      border: none; padding: 9px 20px; border-radius: 8px; cursor: pointer; font-size: 13px;
-    }
-    .btn-cancel {
-      background: none; border: 1px solid var(--border); color: var(--muted);
-      padding: 9px 20px; border-radius: 8px; cursor: pointer; font-size: 13px;
-    }
-    .modal-note {
-      font-size: 11px; color: #3a4a60; margin-top: 12px; text-align: center;
-    }
-    .key-status {
-      font-size: 10px; padding: 2px 8px; border-radius: 10px;
-      font-weight: 600; margin-left: 4px;
-    }
-    .key-ok { background: #00e67620; color: var(--green); border: 1px solid #00e67640; }
-    .key-no { background: #f4433620; color: #f44336; border: 1px solid #f4433640; }
 
     /* ── Leagues Bar ── */
     .leagues-bar {
       display: flex; gap: 8px; padding: 14px 20px;
       overflow-x: auto; background: #060b16;
-      border-bottom: 1px solid var(--border); scrollbar-width: none;
+      border-bottom: 1px solid var(--border);
+      scrollbar-width: none;
     }
     .league-btn {
       display: flex; align-items: center; gap: 7px;
@@ -149,7 +123,8 @@
     /* ── Matches ── */
     .match-row {
       display: flex; align-items: center; justify-content: space-between;
-      padding: 7px 0; border-bottom: 1px solid var(--border); font-size: 12px; gap: 8px;
+      padding: 7px 0; border-bottom: 1px solid var(--border);
+      font-size: 12px; gap: 8px;
     }
     .match-row:last-child { border: none; }
     .match-teams { flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
@@ -204,18 +179,9 @@
     /* ── Error ── */
     .error-box {
       background: #f4433610; border: 1px solid #f4433640;
-      border-radius: 10px; padding: 20px; text-align: center; color: #f44336; font-size: 13px;
+      border-radius: 10px; padding: 20px; text-align: center;
+      color: #f44336; font-size: 13px;
     }
-    .error-box a { color: var(--green); text-decoration: underline; cursor: pointer; }
-
-    /* ── No-key ── */
-    .nokey-box {
-      background: var(--card); border: 1px solid var(--border);
-      border-radius: 14px; padding: 40px 30px; text-align: center;
-    }
-    .nokey-box h3 { font-size: 18px; margin-bottom: 10px; }
-    .nokey-box p { font-size: 13px; color: var(--muted); margin-bottom: 22px; line-height: 1.7; }
-    .nokey-box .btn-primary { font-size: 14px; padding: 11px 28px; }
 
     /* ── Source tag ── */
     .source-tag {
@@ -238,33 +204,13 @@
 </head>
 <body>
 
-  <!-- API Key Modal -->
-  <div class="modal-overlay" id="key-modal">
-    <div class="modal">
-      <h3>🔑 Clé API Anthropic</h3>
-      <p>
-        FootStats Pro utilise l'API <strong>Claude + Web Search</strong> pour récupérer les vraies stats
-        de la saison 2025-26 en temps réel.<br><br>
-        Obtiens ta clé gratuite sur <strong>console.anthropic.com</strong> (onglet API Keys).
-        Elle est stockée uniquement dans ton navigateur (localStorage).
-      </p>
-      <input type="password" id="key-input" placeholder="sk-ant-api03-..." autocomplete="off" />
-      <div class="modal-btns">
-        <button class="btn-cancel" onclick="closeModal()">Annuler</button>
-        <button class="btn-primary" onclick="saveKey()">Enregistrer</button>
-      </div>
-      <div class="modal-note">🔒 La clé n'est jamais envoyée ailleurs qu'à api.anthropic.com</div>
-    </div>
-  </div>
-
   <!-- Top Bar -->
   <div class="topbar">
     <span class="logo">⚽ FootStats Pro</span>
-    <span class="live-badge">● 2025-26</span>
+    <span class="live-badge">● DONNÉES RÉELLES</span>
     <button class="nav-btn active" onclick="switchTab('overview', this)">Vue d'ensemble</button>
     <button class="nav-btn" onclick="switchTab('joueurs', this)">Joueurs</button>
     <button class="nav-btn" onclick="switchTab('classement', this)">Classement</button>
-    <button class="key-btn" id="key-btn" onclick="openModal()">🔑 <span id="key-status-badge"></span></button>
   </div>
 
   <!-- Leagues Bar -->
@@ -279,7 +225,7 @@
       <div id="overview-content">
         <div class="loader">
           <div class="spinner"></div>
-          <div class="loader-text">Initialisation...</div>
+          <div class="loader-text">Chargement...</div>
         </div>
       </div>
     </div>
@@ -292,15 +238,13 @@
   </div>
 
   <script>
-    /* ══════════════════════════════════════════
-       DATA
-    ══════════════════════════════════════════ */
+    /* ── Data ── */
     const LEAGUES = {
-      epl:    { name: "Premier League", flag: "🏴󠁧󠁢󠁥󠁮󠁧󠁿", id: 39,  teams: ["Arsenal","Chelsea","Liverpool","Man City","Man United","Tottenham","Newcastle","Aston Villa","West Ham","Brighton"] },
-      laliga: { name: "La Liga",        flag: "🇪🇸",       id: 140, teams: ["Real Madrid","Barcelone","Atlético Madrid","Athletic Bilbao","Real Sociedad","Villarreal","Real Betis","Valencia","Séville","Girona"] },
-      bund:   { name: "Bundesliga",     flag: "🇩🇪",       id: 78,  teams: ["Bayern Munich","Dortmund","Leverkusen","Stuttgart","Leipzig","Francfort","Fribourg","Wolfsburg","Hoffenheim","Augsburg"] },
-      seriea: { name: "Serie A",        flag: "🇮🇹",       id: 135, teams: ["Inter Milan","Juventus","Napoli","AC Milan","Atalanta","Roma","Lazio","Fiorentina","Bologne","Torino"] },
-      ligue1: { name: "Ligue 1",        flag: "🇫🇷",       id: 61,  teams: ["PSG","Monaco","Lyon","Marseille","Lens","Lille","Rennes","Nice","Strasbourg","Nantes"] }
+      epl:    { name: "Premier League", flag: "🏴󠁧󠁢󠁥󠁮󠁧󠁿", teams: ["Arsenal","Chelsea","Liverpool","Man City","Man United","Tottenham","Newcastle","Aston Villa","West Ham","Brighton"] },
+      laliga: { name: "La Liga",        flag: "🇪🇸",       teams: ["Real Madrid","Barcelone","Atlético Madrid","Athletic Bilbao","Real Sociedad","Villarreal","Real Betis","Valencia","Séville","Girona"] },
+      bund:   { name: "Bundesliga",     flag: "🇩🇪",       teams: ["Bayern Munich","Dortmund","Leverkusen","Stuttgart","Leipzig","Francfort","Fribourg","Wolfsburg","Hoffenheim","Augsburg"] },
+      seriea: { name: "Serie A",        flag: "🇮🇹",       teams: ["Inter Milan","Juventus","Napoli","AC Milan","Atalanta","Roma","Lazio","Fiorentina","Bologne","Torino"] },
+      ligue1: { name: "Ligue 1",        flag: "🇫🇷",       teams: ["PSG","Monaco","Lyon","Marseille","Lens","Lille","Rennes","Nice","Strasbourg","Nantes"] }
     };
 
     const ICONS = {
@@ -316,45 +260,12 @@
       "Lille":"🔴","Rennes":"🔴","Nice":"🔴","Strasbourg":"🔵","Nantes":"🟡"
     };
 
-    /* ══════════════════════════════════════════
-       STATE & KEY MANAGEMENT
-    ══════════════════════════════════════════ */
+    /* ── State ── */
     let curLeague = 'epl', curTeam = 'Arsenal', curTab = 'overview';
     const cache = {};
     let loading = false;
 
-    function getKey() { return localStorage.getItem('anthropic_key') || ''; }
-    function setKey(k) { localStorage.setItem('anthropic_key', k); }
-
-    function updateKeyBadge() {
-      const k = getKey();
-      const badge = document.getElementById('key-status-badge');
-      if (k && k.startsWith('sk-ant-')) {
-        badge.innerHTML = '<span class="key-status key-ok">✓ Clé OK</span>';
-      } else {
-        badge.innerHTML = '<span class="key-status key-no">! Ajouter clé</span>';
-      }
-    }
-
-    function openModal() {
-      document.getElementById('key-input').value = getKey();
-      document.getElementById('key-modal').classList.add('open');
-    }
-    function closeModal() {
-      document.getElementById('key-modal').classList.remove('open');
-    }
-    function saveKey() {
-      const v = document.getElementById('key-input').value.trim();
-      setKey(v);
-      closeModal();
-      updateKeyBadge();
-      cache[`${curLeague}_${curTeam}`] = null; // reset cache
-      loadData();
-    }
-
-    /* ══════════════════════════════════════════
-       UI BUILD
-    ══════════════════════════════════════════ */
+    /* ── Build UI ── */
     function buildLeagues() {
       const bar = document.getElementById('leagues-bar');
       bar.innerHTML = '';
@@ -363,7 +274,11 @@
         const b = document.createElement('button');
         b.className = 'league-btn' + (k === curLeague ? ' active' : '');
         b.innerHTML = `${l.flag} ${l.name}`;
-        b.onclick = () => { curLeague = k; curTeam = LEAGUES[k].teams[0]; buildLeagues(); buildTeams(); loadData(); };
+        b.onclick = () => {
+          curLeague = k;
+          curTeam = LEAGUES[k].teams[0];
+          buildLeagues(); buildTeams(); loadData();
+        };
         bar.appendChild(b);
       });
     }
@@ -388,69 +303,33 @@
       el.classList.add('active');
     }
 
-    /* ══════════════════════════════════════════
-       LOADER / ERROR / NO-KEY
-    ══════════════════════════════════════════ */
+    /* ── Loader / Error ── */
     function showLoader(msg) {
-      const html = `<div class="loader"><div class="spinner"></div>
-        <div class="loader-text">${msg}</div>
-        <div class="loader-sub">Recherche web en temps réel — données saison 2025-26</div>
-      </div>`;
+      const html = `<div class="loader"><div class="spinner"></div><div class="loader-text">${msg}</div><div class="loader-sub">Recherche web en cours pour des données réelles 2024-25...</div></div>`;
       ['overview-content','joueurs-content','classement-content'].forEach(id => {
         document.getElementById(id).innerHTML = html;
       });
     }
 
-    function showNoKey() {
-      document.getElementById('overview-content').innerHTML = `
-        <div class="nokey-box">
-          <div style="font-size:40px;margin-bottom:16px">🔑</div>
-          <h3>Clé API requise</h3>
-          <p>
-            FootStats Pro utilise <strong>Claude + Web Search</strong> pour récupérer<br>
-            les vraies statistiques de la saison <strong>2025-26</strong> en direct.<br><br>
-            Crée ton compte gratuit sur <strong>console.anthropic.com</strong>,<br>
-            génère une clé API et colle-la ici.
-          </p>
-          <button class="btn-primary" onclick="openModal()">🔑 Ajouter ma clé API</button>
-        </div>`;
-      ['joueurs-content','classement-content'].forEach(id => {
-        document.getElementById(id).innerHTML = '';
-      });
-    }
-
     function showError(e) {
-      const msg = typeof e === 'string' ? e : (e.message || 'Erreur inconnue');
-      document.getElementById('overview-content').innerHTML = `
-        <div class="error-box">
-          ⚠️ ${msg}<br><br>
-          <small>
-            Vérifie ta clé API et ta connexion.<br>
-            <a onclick="openModal()">Modifier la clé API</a>
-          </small>
-        </div>`;
+      document.getElementById('overview-content').innerHTML =
+        `<div class="error-box">⚠️ Erreur : ${e}<br><small>Vérifie ta connexion et réessaie.</small></div>`;
     }
 
-    /* ══════════════════════════════════════════
-       API CALL — Claude + Web Search
-    ══════════════════════════════════════════ */
+    /* ── API Call ── */
     async function loadData() {
-      const key = getKey();
-      if (!key || !key.startsWith('sk-ant-')) { showNoKey(); return; }
-
-      const cacheKey = `${curLeague}_${curTeam}`;
-      if (cache[cacheKey]) { render(cache[cacheKey]); return; }
+      const key = `${curLeague}_${curTeam}`;
+      if (cache[key]) { render(cache[key]); return; }
       if (loading) return;
       loading = true;
-      showLoader(`Chargement des stats de ${curTeam} 2025-26...`);
+      showLoader(`Chargement des stats de ${curTeam}...`);
 
       const league = LEAGUES[curLeague].name;
+      const prompt = `Search the web for real current 2024-2025 season football statistics for ${curTeam} in ${league}.
 
-      const prompt = `Search the web for real current 2025-2026 season football statistics for ${curTeam} in ${league}.
+Find: recent match results, top scorers, squad player stats, league standings, and team performance metrics.
 
-Search for: recent match results and scores, top scorers with exact goal counts, squad stats, current league standings with points, and team performance metrics for season 2025-26.
-
-Return ONLY a valid JSON object (no markdown, no backticks, no comments, no extra text) with this exact structure:
+Return ONLY a valid JSON object (no markdown, no backticks, no extra text) with this exact structure:
 {
   "city": "city name",
   "stadium": "stadium name",
@@ -492,34 +371,23 @@ Return ONLY a valid JSON object (no markdown, no backticks, no comments, no extr
   ]
 }
 Rules:
-- matches: "V"=win for ${curTeam}, "D"=loss, "N"=draw
-- "hl" only on ${curTeam}'s real standing row; place at the real current position
+- matches "V"=win for ${curTeam}, "D"=loss, "N"=draw
+- "hl" only on ${curTeam}'s standing row; place at real current position
 - initials "XX" = 2-letter surname abbreviation
-- All numeric values are real integers or decimals, NOT strings
-- Use ONLY real 2025-26 season data found on the web`;
+- All numbers are real integers or decimals, NOT strings
+- Use real 2024-25 season data`;
 
       try {
         const res = await fetch("https://api.anthropic.com/v1/messages", {
           method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            "x-api-key": key,
-            "anthropic-version": "2023-06-01",
-            "anthropic-dangerous-direct-browser-access": "true"
-          },
+          headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
-            model: "claude-opus-4-5",
-            max_tokens: 3000,
+            model: "claude-sonnet-4-20250514",
+            max_tokens: 2000,
             tools: [{ type: "web_search_20250305", name: "web_search" }],
             messages: [{ role: "user", content: prompt }]
           })
         });
-
-        if (!res.ok) {
-          const err = await res.json().catch(() => ({}));
-          throw new Error(err.error?.message || `HTTP ${res.status}`);
-        }
-
         const data = await res.json();
 
         let raw = '';
@@ -527,20 +395,18 @@ Rules:
           raw = data.content.filter(b => b.type === 'text').map(b => b.text).join('');
         }
         const match = raw.match(/\{[\s\S]*\}/);
-        if (!match) throw new Error("Réponse JSON introuvable dans la réponse Claude.");
+        if (!match) throw new Error("Réponse JSON non trouvée");
         const d = JSON.parse(match[0]);
-        cache[cacheKey] = d;
+        cache[key] = d;
         render(d);
       } catch (e) {
-        showError(e);
+        showError(e.message || 'Erreur inconnue');
       } finally {
         loading = false;
       }
     }
 
-    /* ══════════════════════════════════════════
-       RENDER
-    ══════════════════════════════════════════ */
+    /* ── Render ── */
     function render(d) {
       const icon = ICONS[curTeam] || '⚽';
       const league = LEAGUES[curLeague].name;
@@ -576,25 +442,25 @@ Rules:
             ${(d.scorers||[]).map((s,i) => `<div class="scorer-row"><span class="rank">${i+1}</span><span class="sname">${s[0]}</span><div class="gbar-wrap"><div class="gbar" style="width:${Math.round((s[1]/maxG)*80)}px"></div><span class="gn">${s[1]}</span></div></div>`).join('')}
           </div>
         </div>
-        <div class="source-tag"><span class="source-dot"></span> Données réelles — saison 2025-26 via Claude Web Search</div>`;
+        <div class="source-tag"><span class="source-dot"></span> Données réelles — saison 2024-25 via recherche web</div>`;
 
       /* Joueurs */
       document.getElementById('joueurs-content').innerHTML = `
         <div class="card">
-          <div class="card-title" style="margin-bottom:12px">Effectif & statistiques — ${curTeam} · 2025-26</div>
+          <div class="card-title" style="margin-bottom:12px">Effectif & statistiques — ${curTeam}</div>
           <table>
             <thead><tr><th>#</th><th>Joueur</th><th>Poste</th><th>Matchs</th><th>Buts</th><th>Passes D.</th><th>Note</th></tr></thead>
             <tbody>
               ${(d.players||[]).map(p => `<tr><td>${p[0]}</td><td><div class="pi"><div class="av">${p[1]}</div>${p[2]}</div></td><td><span class="pos">${p[3]}</span></td><td>${p[4]}</td><td>${p[5]}</td><td>${p[6]}</td><td style="color:var(--green);font-weight:700">${p[7]}</td></tr>`).join('')}
             </tbody>
           </table>
-          <div class="source-tag"><span class="source-dot"></span> Données réelles — saison 2025-26 via Claude Web Search</div>
+          <div class="source-tag"><span class="source-dot"></span> Données réelles — saison 2024-25 via recherche web</div>
         </div>`;
 
       /* Classement */
       document.getElementById('classement-content').innerHTML = `
         <div class="card">
-          <div class="card-title" style="margin-bottom:12px">Classement ${league} — 2025-26</div>
+          <div class="card-title" style="margin-bottom:12px">Classement ${league} — 2024-25</div>
           <table>
             <thead><tr><th>Pos.</th><th>Équipe</th><th>J</th><th>V</th><th>N</th><th>D</th><th>Buts</th><th>Pts</th></tr></thead>
             <tbody>
@@ -610,23 +476,14 @@ Rules:
               }).join('')}
             </tbody>
           </table>
-          <div class="source-tag"><span class="source-dot"></span> Données réelles — saison 2025-26 via Claude Web Search</div>
+          <div class="source-tag"><span class="source-dot"></span> Données réelles — saison 2024-25 via recherche web</div>
         </div>`;
     }
 
-    /* ══════════════════════════════════════════
-       INIT
-    ══════════════════════════════════════════ */
+    /* ── Init ── */
     buildLeagues();
     buildTeams();
-    updateKeyBadge();
-
-    const k = getKey();
-    if (!k || !k.startsWith('sk-ant-')) {
-      showNoKey();
-    } else {
-      loadData();
-    }
+    loadData();
   </script>
 </body>
 </html>
